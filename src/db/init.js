@@ -3,6 +3,8 @@ const { seed } = require( './seed' );
 
 // creates the required models 
 require( '../models/user' );
+require( '../models/meeting' );
+require( '../models/team' );
 
 const uri = 'mongodb://localhost:27017/meetings-app';
 

@@ -12,7 +12,7 @@ const teamSchema = new mongoose.Schema({
     description: String,
     members: [
         {
-            type: Schema.ObjectId, 
+            type: mongoose.Schema.ObjectId, 
             ref: 'user'
         }
     ]
