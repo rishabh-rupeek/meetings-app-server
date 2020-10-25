@@ -17,7 +17,7 @@ mongoose.connection.on( 'open', () => {
     console.log( 'connected to db' );
     
     // add dummy data at first
-    seed();
+    //seed();
 });
 
 mongoose.connection.on( 'error', err => {
