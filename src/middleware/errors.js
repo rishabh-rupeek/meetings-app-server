@@ -1,3 +1,7 @@
+function pageNotFoundHandler( req, res, next ) {
+    res.render( '404' );
+}
+
 function genericErrorHandler( err, req, res, next ) {
     res.status( err.status ).json({
         message: err.message
@@ -5,5 +9,6 @@ function genericErrorHandler( err, req, res, next ) {
 }
 
 module.exports = {
+    pageNotFoundHandler,
     genericErrorHandler
 };

@@ -1,6 +1,10 @@
 const mongoose = require( 'mongoose' );
 
 const meetingSchema = new mongoose.Schema({
+    createdBy:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    },
     scheduledOn: {
         type: Date,
         required: true

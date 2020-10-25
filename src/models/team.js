@@ -1,6 +1,10 @@
 const mongoose = require( 'mongoose' );
 
 const teamSchema = new mongoose.Schema({
+    createdBy:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    },
     name: {
         type: String,
         required: true
