@@ -50,7 +50,7 @@ async function dropFromTeam( req, res, next ){
 // ADD member to team
 async function addMemberToTeam( req, res, next ){
     const teamId = req.body.teamId;
-    const memberId = req.body.userId;
+    const memberId = req.body.memberId;
 
     try{
 
