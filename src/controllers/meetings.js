@@ -8,7 +8,7 @@ async function addMeeting( req, res, next ) {
 
     try {
         meeting.scheduledOn = new Date(meeting.scheduledOn);
-        console.log(meeting);
+        // console.log(meeting);
         const addedMeeting = await Meeting.create(meeting);
         res.status( 201 ).json( addedMeeting );
 

@@ -7,7 +7,6 @@ const {
     dropFromMeeting,
     addAttendeeToMeeting
 } = require( '../../controllers/meetings' );
-const { route } = require('./users');
 
 const router = express.Router();
 
