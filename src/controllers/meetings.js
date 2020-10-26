@@ -33,8 +33,44 @@ async function getMeetings( req, res, next ){
 
 }
 
+// DROP from a meeting
+async function dropFromMeeting( req, res, next ){
+    const meetingId = req.body.meetingId;
+    const userId = req.body.userId;
+
+    try{
+
+        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $pull: { "attendees" : userId } } );
+        res.json(meeting);
+
+    }catch( error ){
+        error.status = 500;
+        next( error );
+    }
+
+}
+
+// ADD attendee to a meeting
+async function addAttendeeToMeeting( req, res, next ){
+
+    const meetingId = req.body.meetingId;
+    const attendeeId = req.body.attendeeId;
+
+    try{
+
+        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { "attendees" : attendeeId } } );
+        res.json(meeting);
+
+    }catch( error ){
+        error.status = 500;
+        next( error );
+    }
+
+}
 
 module.exports = {
     addMeeting,
-    getMeetings
+    getMeetings,
+    dropFromMeeting,
+    addAttendeeToMeeting
 }
