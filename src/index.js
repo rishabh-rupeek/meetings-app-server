@@ -6,6 +6,7 @@ const path = require( 'path' );
 const usersRouter = require( './routes/api/users' );
 const meetingsRouter = require( './routes/api/meetings' );
 const teamsRouter = require( './routes/api/teams' );
+const calendarRouter = require( './routes/api/calendar' );
 const { genericErrorHandler, pageNotFoundHandler } = require( './middleware/errors' );
 
 const app = express();
@@ -18,6 +19,7 @@ app.use( express.urlencoded() );
 app.use( '/users', usersRouter );
 app.use( '/meetings', meetingsRouter );
 app.use( '/teams', teamsRouter );
+app.use( '/calendar', calendarRouter );
 
 app.use( pageNotFoundHandler );
 app.use( genericErrorHandler );

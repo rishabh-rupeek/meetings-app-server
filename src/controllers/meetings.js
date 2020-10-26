@@ -33,6 +33,22 @@ async function getMeetings( req, res, next ){
 
 }
 
+// GET all meetings for a user on a given date
+async function getMeetingsForUserOnDate( req, res, next ){
+        const userId = req.body.userId;
+        const givenDate = new Date( req.body.givenDate );
+        
+        try{
+
+            const meetings = await Meeting.find({ "attendees" : userId, "scheduledOn" : givenDate });
+            res.json(meetings);
+
+        }catch( error ){
+            error.status = 404;
+            next( error );
+        }
+}
+
 // GET meeting by id
 async function sendMeetingById( req, res, next ) {
     const id = req.params.id;
@@ -84,6 +100,7 @@ async function addAttendeeToMeeting( req, res, next ){
 module.exports = {
     addMeeting,
     getMeetings,
+    getMeetingsForUserOnDate,
     sendMeetingById,
     dropFromMeeting,
     addAttendeeToMeeting
