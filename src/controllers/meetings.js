@@ -33,6 +33,19 @@ async function getMeetings( req, res, next ){
 
 }
 
+// GET meeting by id
+async function sendMeetingById( req, res, next ) {
+    const id = req.params.id;
+
+    try {
+        const meeting = await Meeting.findById( id ).exec();
+        res.json( meeting );
+    } catch( error ) {
+        error.status = 404;
+        next( error );
+    }
+}
+
 // DROP from a meeting
 async function dropFromMeeting( req, res, next ){
     const meetingId = req.body.meetingId;
@@ -71,6 +84,7 @@ async function addAttendeeToMeeting( req, res, next ){
 module.exports = {
     addMeeting,
     getMeetings,
+    sendMeetingById,
     dropFromMeeting,
     addAttendeeToMeeting
 }
