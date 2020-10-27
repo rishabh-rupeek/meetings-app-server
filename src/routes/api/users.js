@@ -1,5 +1,7 @@
 const express = require( 'express' );
 
+const { authenticate } = require('../../utils/auth');
+
 const { 
     sendUsers,
     sendUserById,
@@ -7,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.get( '/', sendUsers );
-router.get( '/:id', sendUserById );
+router.get( '/', authenticate, sendUsers );
+router.get( '/:id', authenticate, sendUserById );
 
 module.exports = router;

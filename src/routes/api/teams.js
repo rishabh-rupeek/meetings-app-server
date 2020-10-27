@@ -1,5 +1,7 @@
 const express = require( 'express' );
 
+const { authenticate } = require('../../utils/auth');
+
 const { 
     getTeams,
     createTeam,
@@ -9,9 +11,9 @@ const {
 
 const router = express.Router();
 
-router.get( '/', getTeams );
-router.post( '/', createTeam );
-router.patch( '/:id/drop', dropFromTeam );
-router.patch( '/:id/addMember', addMemberToTeam );
+router.get( '/', authenticate, getTeams );
+router.post( '/', authenticate, createTeam );
+router.patch( '/:id/drop', authenticate, dropFromTeam );
+router.patch( '/:id/addMember', authenticate, addMemberToTeam );
 
 module.exports = router;

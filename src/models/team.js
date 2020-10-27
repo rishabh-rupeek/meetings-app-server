@@ -1,5 +1,16 @@
 const mongoose = require( 'mongoose' );
 
+const memberSchema = mongoose.Schema({
+    userId:{
+        type: mongoose.Schema.ObjectId, 
+        ref: 'user'
+    },
+    email:{
+        type: String,
+        required: true
+    }
+},{ _id : false });
+
 const teamSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -10,18 +21,7 @@ const teamSchema = new mongoose.Schema({
         required: true
     },
     description: String,
-    members: [
-        {
-            userId:{
-                type: mongoose.Schema.ObjectId, 
-                ref: 'user'
-            },
-            email:{
-                type: String,
-                required: true
-            }
-        }
-    ]
+    members: [ memberSchema ]
 })
 
 mongoose.model( 'team', teamSchema );

@@ -1,5 +1,7 @@
 const express = require( 'express' );
 
+const { authenticate } = require('../../utils/auth');
+
 const { 
     addMeeting,
     getMeetings,
@@ -10,10 +12,10 @@ const {
 
 const router = express.Router();
 
-router.get( '/', getMeetings );
-router.post( '/' , addMeeting );
-router.get( '/:id' , sendMeetingById );
-router.patch( '/:id/addAttendee', addAttendeeToMeeting );
-router.patch( '/:id/drop', dropFromMeeting );
+router.get( '/', authenticate, getMeetings );
+router.post( '/' , authenticate, addMeeting );
+router.get( '/:id' , authenticate, sendMeetingById );
+router.patch( '/:id/addAttendee', authenticate, addAttendeeToMeeting );
+router.patch( '/:id/drop', authenticate, dropFromMeeting );
 
 module.exports = router;
