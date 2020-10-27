@@ -19,25 +19,45 @@ async function addMeeting( req, res, next ) {
 // GET all meetings for a user
 async function getMeetings( req, res, next ){
     const userId = req.body.userId;
+    const email = req.body.email;
     const dateOption = req.body.dateOption;
+    const searchItem = req.body.searchItem;
     //const searchTerms = req.body.searchTerms;
 
     try{
         //console.log(userId);
         let meetings;
-        const currentDate = new Date();
-        //console.log(currentDate);
-        if(dateOption === "ALL"){
-            meetings = await Meeting.find({ "attendees.userId" : userId });
-        }else if(dateOption === "PAST"){
-            meetings = await Meeting.find({ "attendees.userId" : userId }).where("date").lte(currentDate).exec();
-        }else if(dateOption === "TODAY"){
-            meetings = await Meeting.find({ "attendees.userId" : userId }, { "date"  : currentDate });
-        }else if(dateOption === "UPCOMING"){
-            meetings = await Meeting.find({ "attendees.userId" : userId }).where("date").gte(currentDate).exec();
+        const today = new Date();
+        const filter = { date: { }, attendees: { $elemMatch: { } } };
+
+        if( userId ) {
+            filter.attendees.$elemMatch.userId = userId;
         }
         
+        if( email ) {
+            filter.attendees.$elemMatch.email = email;
+        }
+
+        //console.log(currentDate);
+        if(dateOption === "ALL"){
+            delete filter.date;
+        }else if(dateOption === "PAST"){
+            filter.date.$lt = today;
+        }else if(dateOption === "TODAY"){
+            filter.date.$eq = today;
+        }else if(dateOption === "UPCOMING"){
+            filter.date.$gt = today;
+        }
+
+        if(searchItem){
+            filter.description = {
+                $regex: new RegExp( searchItem, "i" )
+            }
+        }
+
+        meetings = await Meeting.find(filter).exec();
         res.json(meetings);
+
     }catch( error ){
         error.status = 404;
         next( error );
