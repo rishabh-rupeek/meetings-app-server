@@ -16,10 +16,10 @@ app.use( express.static( path.join( __dirname, 'public' ) ) );
 app.use( express.json() );
 app.use( express.urlencoded() );
 
-app.use( '/users', usersRouter );
-app.use( '/meetings', meetingsRouter );
-app.use( '/teams', teamsRouter );
-app.use( '/calendar', calendarRouter );
+app.use( '/api/users', usersRouter );
+app.use( '/api/meetings', meetingsRouter );
+app.use( '/api/teams', teamsRouter );
+app.use( '/api/calendar', calendarRouter );
 
 app.use( pageNotFoundHandler );
 app.use( genericErrorHandler );

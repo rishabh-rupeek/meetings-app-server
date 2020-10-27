@@ -30,7 +30,6 @@ const meetingSchema = new mongoose.Schema({
             required: true
         }
     },
-    
     attendees: [
         {
             userId:{

@@ -7,8 +7,6 @@ async function addMeeting( req, res, next ) {
     const meeting = req.body;
 
     try {
-        meeting.scheduledOn = new Date(meeting.scheduledOn);
-        // console.log(meeting);
         const addedMeeting = await Meeting.create(meeting);
         res.status( 201 ).json( addedMeeting );
 
@@ -21,10 +19,24 @@ async function addMeeting( req, res, next ) {
 // GET all meetings for a user
 async function getMeetings( req, res, next ){
     const userId = req.body.userId;
+    const dateOption = req.body.dateOption;
+    //const searchTerms = req.body.searchTerms;
 
     try{
-        console.log(userId);
-        const meetings = await Meeting.find({ "attendees" : userId });
+        //console.log(userId);
+        let meetings;
+        const currentDate = new Date();
+        //console.log(currentDate);
+        if(dateOption === "ALL"){
+            meetings = await Meeting.find({ "attendees.userId" : userId });
+        }else if(dateOption === "PAST"){
+            meetings = await Meeting.find({ "attendees.userId" : userId }).where("date").lte(currentDate).exec();
+        }else if(dateOption === "TODAY"){
+            meetings = await Meeting.find({ "attendees.userId" : userId }, { "date"  : currentDate });
+        }else if(dateOption === "UPCOMING"){
+            meetings = await Meeting.find({ "attendees.userId" : userId }).where("date").gte(currentDate).exec();
+        }
+        
         res.json(meetings);
     }catch( error ){
         error.status = 404;
@@ -39,8 +51,8 @@ async function getMeetingsForUserOnDate( req, res, next ){
         const givenDate = new Date( req.body.givenDate );
         
         try{
-
-            const meetings = await Meeting.find({ "attendees" : userId, "scheduledOn" : givenDate });
+            //console.log(givenDate);
+            const meetings = await Meeting.find().where("attendees.userId").equals(userId).where("date").equals(givenDate).exec();
             res.json(meetings);
 
         }catch( error ){
@@ -64,12 +76,17 @@ async function sendMeetingById( req, res, next ) {
 
 // DROP from a meeting
 async function dropFromMeeting( req, res, next ){
-    const meetingId = req.body.meetingId;
+    const meetingId = req.params.id;
     const userId = req.body.userId;
+    const userEmail = req.body.userEmail;
+    const user = {
+        userId : userId,
+        email : userEmail
+    }
 
     try{
-
-        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $pull: { "attendees" : userId } } );
+        console.log(user);
+        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $pull: { "attendees" : user } } );
         res.json(meeting);
 
     }catch( error ){
@@ -82,12 +99,19 @@ async function dropFromMeeting( req, res, next ){
 // ADD attendee to a meeting
 async function addAttendeeToMeeting( req, res, next ){
 
-    const meetingId = req.body.meetingId;
-    const attendeeId = req.body.attendeeId;
+    const meetingId = req.params.id;
+    const data = req.body;
 
+    let attendees;
+    if( data instanceof Array ) {
+        attendees = data;
+    } else {
+        attendees = [ data ];
+    }
+    
     try{
-
-        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { "attendees" : attendeeId } } );
+        console.log(attendees);
+        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { attendees } } );
         res.json(meeting);
 
     }catch( error ){

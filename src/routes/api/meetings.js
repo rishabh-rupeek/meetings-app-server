@@ -3,7 +3,6 @@ const express = require( 'express' );
 const { 
     addMeeting,
     getMeetings,
-    getMeetingsForUserOnDate,
     sendMeetingById,
     dropFromMeeting,
     addAttendeeToMeeting
@@ -12,10 +11,9 @@ const {
 const router = express.Router();
 
 router.get( '/', getMeetings );
-router.get( '/search', getMeetingsForUserOnDate );
-router.post( '/add', addMeeting );
+router.post( '/' , addMeeting );
 router.get( '/:id' , sendMeetingById );
-router.patch( '/drop', dropFromMeeting );
-router.patch( '/addAttendee',addAttendeeToMeeting );
+router.patch( '/:id/addAttendee', addAttendeeToMeeting );
+router.patch( '/:id/drop', dropFromMeeting );
 
 module.exports = router;
