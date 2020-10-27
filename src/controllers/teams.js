@@ -16,10 +16,11 @@ async function createTeam( req, res, next ) {
     }
 }
 
-// GET all teams
+// GET all teams for a user
 async function getTeams( req, res, next ){
+    const email = req.body.email;
     try{
-        const teams = await Team.find();
+        const teams = await Team.find({"members.email" : email});
         res.json(teams);
     }catch( error ){
         error.status = 404;
@@ -29,12 +30,16 @@ async function getTeams( req, res, next ){
 
 // DROP from a team
 async function dropFromTeam( req, res, next ){
-    const teamId = req.body.teamId;
+    const teamId = req.params.id;
     const userId = req.body.userId;
-
+    const email = req.body.email;
+    const user = {
+        userId : userId,
+        email : email
+    }
     try{
-
-        const team = await Team.findByIdAndUpdate( teamId, { $pull: { "members" : userId } } );
+        //console.log(user);
+        const team = await Team.findByIdAndUpdate( teamId, { $pull: { "members" : user } } );
 
         // OPTIONAL - after dropping from team drop from the team meetings as well
 
@@ -49,12 +54,17 @@ async function dropFromTeam( req, res, next ){
 
 // ADD member to team
 async function addMemberToTeam( req, res, next ){
-    const teamId = req.body.teamId;
-    const memberId = req.body.memberId;
+    const teamId = req.params.id;
+    const userId = req.body.userId;
+    const email = req.body.email;
+    const user = {
+        userId : userId,
+        email : email
+    }
 
     try{
 
-        const team = await Team.findByIdAndUpdate( teamId, { $addToSet : { "members" : memberId } } );
+        const team = await Team.findByIdAndUpdate( teamId, { $addToSet : { "members" : user } } );
         res.json(team);
 
     }catch( error ){

@@ -110,7 +110,7 @@ async function addAttendeeToMeeting( req, res, next ){
     }
     
     try{
-        console.log(attendees);
+        //console.log(attendees);
         const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { attendees } } );
         res.json(meeting);
 

@@ -10,8 +10,8 @@ const {
 const router = express.Router();
 
 router.get( '/', getTeams );
-router.post( '/create', createTeam );
-router.patch( '/drop', dropFromTeam );
-router.patch( '/addMember', addMemberToTeam );
+router.post( '/', createTeam );
+router.patch( '/:id/drop', dropFromTeam );
+router.patch( '/:id/addMember', addMemberToTeam );
 
 module.exports = router;
