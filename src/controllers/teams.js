@@ -20,7 +20,7 @@ async function createTeam( req, res, next ) {
 async function getTeams( req, res, next ){
     const email = req.body.email;
     try{
-        const teams = await Team.find({"members.email" : email});
+        const teams = await Team.find({ "members.email" : email});
         res.json(teams);
     }catch( error ){
         error.status = 404;
@@ -31,11 +31,9 @@ async function getTeams( req, res, next ){
 // DROP from a team
 async function dropFromTeam( req, res, next ){
     const teamId = req.params.id;
-    const userId = req.body.userId;
-    const email = req.body.email;
     const user = {
-        userId : userId,
-        email : email
+        userId : req.body.userId,
+        email : req.body.email
     }
     try{
         //console.log(user);
@@ -55,11 +53,9 @@ async function dropFromTeam( req, res, next ){
 // ADD member to team
 async function addMemberToTeam( req, res, next ){
     const teamId = req.params.id;
-    const userId = req.body.userId;
-    const email = req.body.email;
     const user = {
-        userId : userId,
-        email : email
+        userId : req.body.userId,
+        email : req.body.email
     }
 
     try{

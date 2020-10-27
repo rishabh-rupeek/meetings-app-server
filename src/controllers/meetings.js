@@ -77,11 +77,9 @@ async function sendMeetingById( req, res, next ) {
 // DROP from a meeting
 async function dropFromMeeting( req, res, next ){
     const meetingId = req.params.id;
-    const userId = req.body.userId;
-    const userEmail = req.body.userEmail;
     const user = {
-        userId : userId,
-        email : userEmail
+        userId : req.body.userId,
+        email : req.body.email
     }
 
     try{
