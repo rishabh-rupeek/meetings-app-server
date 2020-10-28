@@ -2,6 +2,7 @@ require('./db/init');
 
 const express = require( 'express' );
 const path = require( 'path' );
+const cors = require( 'cors' )
 
 const authRouter = require( './routes/api/auth' );
 const usersRouter = require( './routes/api/users' );
@@ -13,6 +14,7 @@ const { genericErrorHandler, pageNotFoundHandler } = require( './middleware/erro
 const app = express();
 
 app.use( express.static( path.join( __dirname, 'public' ) ) );
+app.use( cors() );
 
 app.use( express.json() );
 app.use( express.urlencoded() );
