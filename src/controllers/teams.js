@@ -18,7 +18,7 @@ async function createTeam( req, res, next ) {
 
 // GET all teams for a user
 async function getTeams( req, res, next ){
-    const email = req.body.email;
+    const email = req.query.email;
     try{
         const teams = await Team.find({ "members.email" : email});
         res.json(teams);

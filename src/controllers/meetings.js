@@ -18,12 +18,12 @@ async function addMeeting( req, res, next ) {
 
 // GET all meetings for a user
 async function getMeetings( req, res, next ){
-    const userId = req.body.userId;
-    const email = req.body.email;
-    const dateOption = req.body.dateOption;
-    const searchItem = req.body.searchItem;
+    const userId = res.claims.userId;
+    const email = res.claims.email;
+    const dateOption = req.query.dateOption;
+    const searchItem = req.query.searchItem;
     //const searchTerms = req.body.searchTerms;
-
+    //console.log(userId,email,dateOption,searchItem);
     try{
         //console.log(userId);
         let meetings;
@@ -67,11 +67,10 @@ async function getMeetings( req, res, next ){
 
 // GET all meetings for a user on a given date
 async function getMeetingsForUserOnDate( req, res, next ){
-        const userId = req.body.userId;
-        const givenDate = new Date( req.body.givenDate );
-        
+        const userId = res.claims.userId;
+        const givenDate = new Date( req.query.givenDate );
+        console.log(userId,givenDate)
         try{
-            //console.log(givenDate);
             const meetings = await Meeting.find().where("attendees.userId").equals(userId).where("date").equals(givenDate).exec();
             res.json(meetings);
 
