@@ -88,7 +88,7 @@ async function getMeetings( req, res, next ){
 async function getMeetingsForUserOnDate( req, res, next ){
         const userId = res.claims.userId;
         const givenDate = new Date( req.query.givenDate );
-        console.log(userId,givenDate)
+        //console.log(userId,givenDate)
         try{
             const meetings = await Meeting.find().where("attendees.userId").equals(userId).where("date").equals(givenDate).exec();
             res.json(meetings);
@@ -122,7 +122,7 @@ async function dropFromMeeting( req, res, next ){
     }
 
     try{
-        console.log(user);
+        //console.log(user);
         const meeting = await Meeting.findByIdAndUpdate( meetingId, { $pull: { "attendees" : user } } );
         res.json(meeting);
 
@@ -145,7 +145,7 @@ async function addAttendeeToMeeting( req, res, next ){
         userId:attendees._id,
         email:attendees.email
     }
-    console.log(attendee);
+    //console.log(attendee);
     try{
         //console.log(attendees);
         const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { "attendees" : attendee } } );

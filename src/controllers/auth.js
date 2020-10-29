@@ -14,7 +14,7 @@ async function loginUser( req, res, next ){
                     error.status = 403;
                     return next( error );
                 } else {
-                    console.log(result);
+                    //console.log(result);
                     const error = new Error( 'unknown db error' );
                     error.status = 500;
                     return next( error );

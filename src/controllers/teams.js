@@ -2,9 +2,31 @@ const mongoose = require( 'mongoose' );
 const Team = mongoose.model( 'team' );
 
 const { sendUserByEmail } = require('./users');
+
 // Create a new team
 async function createTeam( req, res, next ) {   
     const team = req.body;
+
+    const memberEmails = team.members;
+    const members = [];
+    const promisesToAwait = [];
+
+    memberEmails.forEach(email => {
+        promisesToAwait.push(sendUserByEmail(email));
+    });
+
+    const users = await Promise.all(promisesToAwait);
+    //console.log(attendeeEmails);
+    //console.log(users);
+    for(let i=0;i<users.length;i++){
+        members.push({
+            userId: users[i]._id,
+            email: memberEmails[i]
+        })
+    }
+
+    team.members = members;
+
     try {
     
         const addedTeam = await Team.create(team);
@@ -19,7 +41,7 @@ async function createTeam( req, res, next ) {
 // GET all teams for a user
 async function getTeams( req, res, next ){
     const userId = res.claims.userId;
-    console.log(userId);
+    //console.log(userId);
     try{
         const teams = await Team.find({ "members.userId" : userId});
         res.json(teams);
@@ -36,7 +58,7 @@ async function dropFromTeam( req, res, next ){
         userId : res.claims.userId,
         email : res.claims.email
     }
-    console.log(user);
+    //console.log(user);
 
     try{
         //console.log(user);
