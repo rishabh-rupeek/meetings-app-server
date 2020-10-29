@@ -1,11 +1,30 @@
 const mongoose = require( 'mongoose' );
-
 const Meeting = mongoose.model( 'meeting' );
+
+const { sendUserByEmail } = require('./users');
 
 // Add a new meeting
 async function addMeeting( req, res, next ) {   
     const meeting = req.body;
+    const attendeeEmails = meeting.attendees;
+    const attendees = [];
+    const promisesToAwait = [];
 
+    attendeeEmails.forEach(attendee => {
+        promisesToAwait.push(sendUserByEmail(attendee));
+    });
+    const users = await Promise.all(promisesToAwait);
+    //console.log(attendeeEmails);
+    //console.log(users);
+    for(let i=0;i<users.length;i++){
+        attendees.push({
+            userId: users[i]._id,
+            email: attendeeEmails[i]
+        })
+    }
+
+    meeting.attendees = attendees;
+    //console.log(meeting);
     try {
         const addedMeeting = await Meeting.create(meeting);
         res.status( 201 ).json( addedMeeting );
@@ -96,9 +115,10 @@ async function sendMeetingById( req, res, next ) {
 // DROP from a meeting
 async function dropFromMeeting( req, res, next ){
     const meetingId = req.params.id;
+    //console.log(res.claims);
     const user = {
-        userId : req.body.userId,
-        email : req.body.email
+        userId : res.claims.userId,
+        email : res.claims.email
     }
 
     try{
@@ -117,18 +137,18 @@ async function dropFromMeeting( req, res, next ){
 async function addAttendeeToMeeting( req, res, next ){
 
     const meetingId = req.params.id;
-    const data = req.body;
+    const email = req.body.email;
 
-    let attendees;
-    if( data instanceof Array ) {
-        attendees = data;
-    } else {
-        attendees = [ data ];
+    let attendees = await sendUserByEmail(email);
+    //console.log(attendees);
+    let attendee = {
+        userId:attendees._id,
+        email:attendees.email
     }
-    
+    console.log(attendee);
     try{
         //console.log(attendees);
-        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { attendees } } );
+        const meeting = await Meeting.findByIdAndUpdate( meetingId, { $addToSet : { "attendees" : attendee } } );
         res.json(meeting);
 
     }catch( error ){

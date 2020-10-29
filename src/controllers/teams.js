@@ -18,9 +18,10 @@ async function createTeam( req, res, next ) {
 
 // GET all teams for a user
 async function getTeams( req, res, next ){
-    const email = req.query.email;
+    const userId = res.claims.userId;
+    console.log(userId);
     try{
-        const teams = await Team.find({ "members.email" : email});
+        const teams = await Team.find({ "members.userId" : userId});
         res.json(teams);
     }catch( error ){
         error.status = 404;
@@ -32,8 +33,8 @@ async function getTeams( req, res, next ){
 async function dropFromTeam( req, res, next ){
     const teamId = req.params.id;
     const user = {
-        userId : req.body.userId,
-        email : req.body.email
+        userId : res.claims.userId,
+        email : res.claims.email
     }
     try{
         //console.log(user);
@@ -53,9 +54,11 @@ async function dropFromTeam( req, res, next ){
 // ADD member to team
 async function addMemberToTeam( req, res, next ){
     const teamId = req.params.id;
+    
+    // sahi krna hai ye
     const user = {
-        userId : req.body.userId,
-        email : req.body.email
+        userId : res.claims.userId,
+        email : res.claims.email
     }
 
     try{
