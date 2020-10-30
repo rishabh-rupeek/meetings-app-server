@@ -4,7 +4,7 @@ const User = mongoose.model( 'user' );
 
 async function sendUsers( req, res ) {    
     try {
-        const users = await User.find().exec();
+        const users = await User.find().select({ "password": 0}).exec();
         res.json( users );
     } catch( error ) {
         error.status = 500;
@@ -16,7 +16,7 @@ async function sendUserById( req, res, next ) {
     const id = req.params.id;
 
     try {
-        const user = await User.findById( id ).exec();
+        const user = await User.findById( id ).select({ "password": 0}).exec();
         res.json( user );
     } catch( error ) {
         error.status = 404;
@@ -27,7 +27,7 @@ async function sendUserById( req, res, next ) {
 async function sendUserByEmail( email ) {
 
     try {
-        const user = await User.findOne({"email":email}).exec();
+        const user = await User.findOne({"email":email}).select({ "password": 0}).exec();
         return user;
     } catch( error ) {
         return null;
