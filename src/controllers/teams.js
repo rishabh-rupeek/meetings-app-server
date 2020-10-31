@@ -65,7 +65,6 @@ async function dropFromTeam( req, res, next ){
         const team = await Team.findByIdAndUpdate( teamId, { $pull: { "members" : user } } );
 
         // OPTIONAL - after dropping from team drop from the team meetings as well
-
         res.json(team);
 
     }catch( error ){

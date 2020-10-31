@@ -27,7 +27,7 @@ async function sendUserById( req, res, next ) {
 async function sendUserByEmail( email ) {
 
     try {
-        const user = await User.findOne({"email":email}).select({ "password": 0}).exec();
+        const user = await User.findOne({"email":email}).exec();
         return user;
     } catch( error ) {
         return null;

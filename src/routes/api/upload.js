@@ -1,13 +1,14 @@
 const express = require( 'express' );
 
 const { authenticate } = require('../../utils/auth');
+const { checkOldPassword } = require('../../utils/auth');
 
 const multer = require('multer');
 const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname,'../../../','profile-images'));
+        cb(null, path.join(__dirname,'../../../','src','public','profile-images'));
     },
     filename: (req, file, cb) => {
         console.log(file);
@@ -32,6 +33,6 @@ const { dirname } = require('path');
 
 const router = express.Router();
 
-router.post( '/' , authenticate, upload.single('image'), uploadData );
+router.post( '/' , authenticate, upload.single('image'), checkOldPassword, uploadData );
 
 module.exports = router;

@@ -12,10 +12,15 @@ const {
 
 const router = express.Router();
 
+function add(req, res, next){
+    console.log(req.body);
+    return next();
+}
+
 router.get( '/', authenticate, getMeetings );
 router.post( '/' , authenticate, addMeeting );
 router.get( '/:id' , authenticate, sendMeetingById );
-router.patch( '/:id/addAttendee', authenticate, addAttendeeToMeeting );
+router.patch( '/:id/addAttendee', authenticate, add, addAttendeeToMeeting );
 router.patch( '/:id/drop', authenticate, dropFromMeeting );
 
 module.exports = router;

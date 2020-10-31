@@ -15,6 +15,8 @@ const { genericErrorHandler, pageNotFoundHandler } = require( './middleware/erro
 
 const app = express();
 
+app.use( cors() );
+
 app.use(bodyParser.urlencoded({
     parameterLimit: 100000,
     limit: '50mb',
@@ -23,7 +25,6 @@ app.use(bodyParser.urlencoded({
   
 app.use( express.static( path.join( __dirname, 'public' ) ) );
 app.use('/uploads', express.static(path.join(__dirname, '/profile-images')));
-app.use( cors() );
 
 app.use( express.json() );
 app.use( express.urlencoded() );
