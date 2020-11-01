@@ -69,7 +69,23 @@ async function registerUser( req, res, next ){
 
         console.log(createdUser);
 
-        return res.status(200).json(createdUser);
+        const claims = { email: createdUser.email, userId: createdUser._id };
+    
+        jwt.sign(claims, 'secretKey', {expiresIn: '24h'}, function( error, token ) {
+            console.log( 'jwt token generated' );
+
+            if( error ) {
+                return res.status(401).json({ message: error.message });
+            }
+
+            res.status(200).json({
+                message: 'Signed in sucessfully',
+                token: token,
+                email: createdUser.email,
+                name: createdUser.name,
+                userId: createdUser._id
+            });
+        });
 
     })
 
