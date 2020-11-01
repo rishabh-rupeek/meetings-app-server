@@ -11,6 +11,7 @@ const meetingsRouter = require( './routes/api/meetings' );
 const teamsRouter = require( './routes/api/teams' );
 const calendarRouter = require( './routes/api/calendar' );
 const uploadRouter = require( './routes/api/upload' );
+const notificationRouter = require( './routes/api/notification' );
 const { genericErrorHandler, pageNotFoundHandler } = require( './middleware/errors' );
 
 const app = express();
@@ -35,6 +36,7 @@ app.use( '/api/meetings', meetingsRouter );
 app.use( '/api/teams', teamsRouter );
 app.use( '/api/calendar', calendarRouter );
 app.use( '/api/upload', uploadRouter );
+app.use( '/api/notifications', notificationRouter );
 
 app.use( pageNotFoundHandler );
 app.use( genericErrorHandler );

@@ -24,7 +24,7 @@ async function uploadData(req,res,next){
                     user.password = hashedPassword;
                     console.log(user.password);
 
-                    User.findByIdAndUpdate( user._id, { "password": user.password } )
+                    User.findByIdAndUpdate( user._id, { "password": user.password,"name": req.body.name } )
                         .select({ "password": 0}).exec();;
 
                     return res.status(201).json({
