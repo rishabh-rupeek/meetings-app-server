@@ -67,7 +67,9 @@ async function registerUser( req, res, next ){
             return next(error);
         }
 
-        res.status(204).json(createdUser);
+        console.log(createdUser);
+
+        return res.status(200).json(createdUser);
 
     })
 
