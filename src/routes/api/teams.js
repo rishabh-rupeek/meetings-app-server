@@ -4,6 +4,7 @@ const { authenticate } = require('../../utils/auth');
 
 const { 
     getTeams,
+    getMembersOfTeam,
     createTeam,
     dropFromTeam,
     addMemberToTeam
@@ -12,6 +13,7 @@ const {
 const router = express.Router();
 
 router.get( '/', authenticate, getTeams );
+router.get( '/:shortName', authenticate, getMembersOfTeam );
 router.post( '/', authenticate, createTeam );
 router.patch( '/:id/drop', authenticate, dropFromTeam );
 router.patch( '/:id/addMember', authenticate, addMemberToTeam );

@@ -51,6 +51,21 @@ async function getTeams( req, res, next ){
     }
 }
 
+// GET all teams for a user
+async function getMembersOfTeam( req, res, next ){
+    try{
+        const team = await Team.find({ "shortName" : req.params.shortName});
+        const members = [];
+        team[0].members.forEach((member) => {
+            members.push(member.email);
+        })
+        res.json(members);
+    }catch( error ){
+        error.status = 404;
+        next( error );
+    }
+}
+
 // DROP from a team
 async function dropFromTeam( req, res, next ){
     const teamId = req.params.id;
@@ -100,6 +115,7 @@ async function addMemberToTeam( req, res, next ){
 
 module.exports = {
     getTeams,
+    getMembersOfTeam,
     createTeam,
     dropFromTeam,
     addMemberToTeam

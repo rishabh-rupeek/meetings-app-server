@@ -2,7 +2,7 @@ const mongoose = require( 'mongoose' );
 const Notification = mongoose.model( 'notification' );
 
 async function getNotificationsForUser( req, res, next ) {  
-    Notification.find({"email":req.body.email})
+    Notification.find({"email":res.claims.email}).sort({date: 'desc'}).limit(5)
         .then((notificationsForUser) => {
             res.json(notificationsForUser); 
         }).catch((error) => {
