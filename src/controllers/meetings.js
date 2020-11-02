@@ -39,14 +39,14 @@ async function addMeeting( req, res, next ) {
 async function getMeetings( req, res, next ){
     const userId = res.claims.userId;
     const email = res.claims.email;
-    const dateOption = req.query.dateOption;
+    const period = req.query.dateOption;
     const searchItem = req.query.searchItem;
     //const searchTerms = req.body.searchTerms;
     //console.log(userId,email,dateOption,searchItem);
     try{
         //console.log(userId);
         let meetings;
-        const today = new Date();
+        
         const filter = { date: { }, attendees: { $elemMatch: { } } };
 
         if( userId ) {
@@ -56,16 +56,21 @@ async function getMeetings( req, res, next ){
         if( email ) {
             filter.attendees.$elemMatch.email = email;
         }
+        
+        const today = new Date( new Date().toISOString().substring( 0, 10 ) );
 
-        //console.log(currentDate);
-        if(dateOption === "ALL"){
-            delete filter.date;
-        }else if(dateOption === "PAST"){
-            filter.date.$lt = today;
-        }else if(dateOption === "TODAY"){
-            filter.date.$eq = today;
-        }else if(dateOption === "UPCOMING"){
-            filter.date.$gt = today;
+        switch( period ) {
+            case 'PAST': 
+                filter.date = { $lt: today };
+                break;
+            case 'TODAY':
+                filter.date = { $eq: today };
+                break;
+            case 'UPCOMING':
+                filter.date = { $gt: today };
+                break;
+            default:
+                delete filter.date;
         }
 
         if(searchItem){
