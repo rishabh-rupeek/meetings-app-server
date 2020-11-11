@@ -39,7 +39,7 @@ async function loginUser( req, res, next ){
             const claims = { email: result.email, userId: result._id };
     
             jwt.sign(claims, 'secretKey', {expiresIn: '24h'}, function( error, token ) {
-                console.log( 'jwt token generated' );
+                //console.log( 'jwt token generated' );
 
                 if( error ) {
                     return res.status(401).json({ message: error.message });
@@ -67,12 +67,12 @@ async function registerUser( req, res, next ){
             return next(error);
         }
 
-        console.log(createdUser);
+        //console.log(createdUser);
 
         const claims = { email: createdUser.email, userId: createdUser._id };
     
         jwt.sign(claims, 'secretKey', {expiresIn: '24h'}, function( error, token ) {
-            console.log( 'jwt token generated' );
+            //console.log( 'jwt token generated' );
 
             if( error ) {
                 return res.status(401).json({ message: error.message });

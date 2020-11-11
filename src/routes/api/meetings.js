@@ -13,7 +13,7 @@ const {
 const router = express.Router();
 
 function add(req, res, next){
-    console.log(req.body);
+    //console.log(req.body);
     return next();
 }
 

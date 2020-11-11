@@ -15,7 +15,7 @@ mongoose.set( 'returnOriginal', false );
 mongoose.connect( uri, { useNewUrlParser: true } );
 
 mongoose.connection.on( 'open', () => {
-    console.log( 'connected to db' );
+    //console.log( 'connected to db' );
     
     // add dummy data at first
     //seed();

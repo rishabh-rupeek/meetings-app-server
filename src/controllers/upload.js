@@ -10,7 +10,7 @@ async function uploadData(req,res,next){
     try {
         let user = await sendUserByEmail(req.query.email);
         
-        console.log(req.body.newPassword);
+        //console.log(req.body.newPassword);
         const SALT_FACTOR = 10;
 
         bcrypt.genSalt( SALT_FACTOR, ( err, salt ) => {
@@ -22,7 +22,7 @@ async function uploadData(req,res,next){
                 .then(( hashedPassword ) => {
                     
                     user.password = hashedPassword;
-                    console.log(user.password);
+                    //console.log(user.password);
 
                     User.findByIdAndUpdate( user._id, { "password": user.password,"name": req.body.name } )
                         .select({ "password": 0}).exec();;

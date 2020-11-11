@@ -57,6 +57,6 @@ if( cluster.isMaster ){
                 return;
             }
 
-            console.log( `Server running on http://localhost:${port}` );
+            //console.log( `Server running on http://localhost:${port}` );
         });
 }

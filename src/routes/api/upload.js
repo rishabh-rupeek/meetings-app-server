@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname,'../../../','src','public','profile-images'));
     },
     filename: (req, file, cb) => {
-        console.log(file);
+        //console.log(file);
         cb(null, req.query.email+'.jpg');
     }
 });
